@@ -3,6 +3,8 @@ package br.senac.sp.produto.controller.mvc;
 import br.senac.sp.produto.controller.ProdutoRequest;
 import br.senac.sp.produto.model.Produto;
 import br.senac.sp.produto.repository.ProdutoRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("produtos")
+@Tag(name = "MVC - Produto Controller API", description = "Controller para tratar requisições de Produtos na API")
 public class ProdutoControllerMvc {
 
     private final ProdutoRepository produtoRepository;
@@ -30,6 +33,7 @@ public class ProdutoControllerMvc {
 
 
     @GetMapping("/cadastro")
+    @Operation(summary = "Exibir Formulario", description = "Redireciona para pagina de formulario")
     public String exibirFormulario(Model model){
         var request = new ProdutoRequest();
         model.addAttribute("produtoRequest", request);

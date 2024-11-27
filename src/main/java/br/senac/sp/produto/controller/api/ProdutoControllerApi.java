@@ -3,6 +3,8 @@ package br.senac.sp.produto.controller.api;
 import br.senac.sp.produto.controller.ProdutoRequest;
 import br.senac.sp.produto.model.Produto;
 import br.senac.sp.produto.repository.ProdutoRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("produtos")
+@Tag(name = "API - Produto Controller API", description = "Controller para tratar requisições de Produtos na API")
 public class ProdutoControllerApi {
 
     private final ProdutoRepository produtoRepository;
@@ -29,13 +32,14 @@ public class ProdutoControllerApi {
     }
 
     @GetMapping("/get-produtos")
+    @Operation(summary = "Recuperar Todos", description = "Retorna todos os produtos")
     public ResponseEntity<List<Produto>> recuperarTodos() {
         var produtos = produtoRepository.findAll();
-        System.out.println("Total de Produtos " + produtos.size());
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/get-produto/{idProduto}")
+    @Operation(summary = "Recuperar por ID", description = "Retorna produto por ID")
     public ResponseEntity<Produto> recuperarPorId(@PathVariable(name = "idProduto") Long id) {
         var produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ID NAO LOCALIZADO"));
@@ -44,6 +48,7 @@ public class ProdutoControllerApi {
     }
 
     @PostMapping("/cadastrar")
+    @Operation(summary = "Cadastrar produto", description = "Cadastra produto")
     public ResponseEntity<Produto> cadastrar(@Valid @RequestBody ProdutoRequest request) {
         var p = new Produto().setDescricao(request.getDescricao())
                 .setPreco(request.getPreco())
@@ -57,6 +62,7 @@ public class ProdutoControllerApi {
     }
 
     @PutMapping("/atualizar/{idProduto}")
+    @Operation(summary = "Atualizar produto", description = "Atualia o produto")
     public ResponseEntity<Produto> alterarProdutoTotal(
             @PathVariable(name = "idProduto") Long id,
             @RequestBody ProdutoRequest request
@@ -89,6 +95,7 @@ public class ProdutoControllerApi {
     }
 
     @PatchMapping("/atualizar/{idProduto}")
+    @Operation(summary = "Atualizar produto", description = "Atualizar produto parcialmente")
     public ResponseEntity<Produto> alterarProdutoParcial(
             @PathVariable(name = "idProduto") Long id,
             @RequestBody ProdutoRequest request
@@ -118,6 +125,7 @@ public class ProdutoControllerApi {
     }
 
     @DeleteMapping("/deletar/{idProduto}")
+    @Operation(summary = "Deletar produto", description = "Deleta produto do banco de dados")
     public ResponseEntity<Void> deletar(@PathVariable(name = "idProduto") Long id){
         var produtoOptional = produtoRepository.findById(id);
         if (produtoOptional.isEmpty()) {
@@ -129,6 +137,7 @@ public class ProdutoControllerApi {
     }
 
     @GetMapping("paginador")
+    @Operation(summary = "Recuperar produtos", description = "Retorna produtos com paginação")
     public ResponseEntity<Page<Produto>> getProdutosPaginado(
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "10") int itens,
@@ -144,13 +153,15 @@ public class ProdutoControllerApi {
 
 
     @GetMapping("/somar-precos/{lote}")
+    @Operation(summary = "Somar preços", description = "Somar os preços dos produtos por lote")
     public ResponseEntity<BigDecimal> calcularPrecosPorLote(@PathVariable String lote){
         var lstProdutos = produtoRepository.findByLote(lote);
         if (lstProdutos.isEmpty()) {
             throw new RuntimeException("PRODUTOS NAO LOCALIZADOS PARA LOTE " + lote);
         }
         var valores = lstProdutos.stream()
-                .map(Produto::getPreco)
+//                .map(Produto::getPreco)
+                .map(p -> p.getPreco().multiply(BigDecimal.valueOf(p.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         return ResponseEntity.ok(valores);
     }

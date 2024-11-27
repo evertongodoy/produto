@@ -14,7 +14,19 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+#  web:
+#    resources:
+#      static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/
 
 flyway:
   enabled: true
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+#    path: /swagger-ui/index.html
+#    operationsSorter: method
+#    tagsSorter: name
