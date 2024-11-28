@@ -3,8 +3,7 @@ package br.senac.sp.produto.controller.api;
 import br.senac.sp.produto.controller.ProdutoRequest;
 import br.senac.sp.produto.model.Produto;
 import br.senac.sp.produto.repository.ProdutoRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,9 +19,13 @@ import java.util.List;
 import java.util.Objects;
 import jakarta.servlet.http.HttpServletRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("produtos")
-@Tag(name = "API - Produto Controller API", description = "Controller para tratar requisições de Produtos na API")
+@Tag(name = "API - Produto Controller API",
+     description = "Controller para tratar requisições de Produtos na API")
 public class ProdutoControllerApi {
 
     private final ProdutoRepository produtoRepository;
@@ -32,7 +35,8 @@ public class ProdutoControllerApi {
     }
 
     @GetMapping("/get-produtos")
-    @Operation(summary = "Recuperar Todos", description = "Retorna todos os produtos")
+    @Operation(summary = "Recuperar Todos",
+               description = "Retorna todos os produtos")
     public ResponseEntity<List<Produto>> recuperarTodos() {
         var produtos = produtoRepository.findAll();
         return ResponseEntity.ok(produtos);
@@ -139,9 +143,13 @@ public class ProdutoControllerApi {
     @GetMapping("paginador")
     @Operation(summary = "Recuperar produtos", description = "Retorna produtos com paginação")
     public ResponseEntity<Page<Produto>> getProdutosPaginado(
+            @Parameter(description = "Numero da pagina", example = "0")
             @RequestParam(defaultValue = "0") int pagina,
+            @Parameter(description = "Quantidade de itens na pagina", example = "10")
             @RequestParam(defaultValue = "10") int itens,
+            @Parameter(description = "Atributo que sera ordenado", example = "descricao")
             @RequestParam(defaultValue = "id") String ordernarPor,
+            @Parameter(description = "Ordem da ordenação", example = "asc")
             @RequestParam(defaultValue = "asc") String ordem
     ){
         var ordenacao = ordem.equalsIgnoreCase("asc") ? Sort.by(ordernarPor).ascending() :
