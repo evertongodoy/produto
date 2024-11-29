@@ -141,7 +141,7 @@ public class ProdutoControllerApi {
     }
 
     @GetMapping("paginador")
-    @Operation(summary = "Recuperar produtos", description = "Retorna produtos com paginação")
+    @Operation(summary = "Recuperar produtos paginados", description = "Retorna produtos com paginação")
     public ResponseEntity<Page<Produto>> getProdutosPaginado(
             @Parameter(description = "Numero da pagina", example = "0")
             @RequestParam(defaultValue = "0") int pagina,
