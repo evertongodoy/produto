@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         <!-- Itera sobre os produtos -->
-        <tr th:each="produto : ${produtos}">
+        <tr th:each="produto : ${produtos}" th:onclick="location.href='/produtos/cadastro?id=' + [[${produto.id}]]">
             <td th:text="${produto.id}"></td>
             <td th:text="${produto.descricao}"></td>
             <td th:text="${produto.preco}"></td>
@@ -54,5 +54,13 @@
 
     <a href="/produtos" class="btn btn-warning" >Voltar inicio</a>
 </div>
+
+<!-- Script para redirecionamento -->
+<script>
+    function redirectToEdit(produtoId) {
+        window.location.href = '/cadastrar?id=' + produtoId;
+    }
+</script>
+
 </body>
 </html>

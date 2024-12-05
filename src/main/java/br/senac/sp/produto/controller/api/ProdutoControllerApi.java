@@ -6,8 +6,9 @@ import br.senac.sp.produto.repository.ProdutoRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 
+
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -175,7 +176,16 @@ public class ProdutoControllerApi {
     }
 
 
-
+    @PostMapping("/validar-num/{num}")
+    @Operation(summary = "Adivinhar numero", description = "Tenta descobrir numero gerado automaticmente")
+    public ResponseEntity<String> validarNum(@PathVariable("num") Integer numero){
+        // Gerar numero de 0 a 10
+        int numeroGerado = (int)(Math.random() * 10);
+        if(numero.equals(numeroGerado)){
+            return ResponseEntity.ok("ACERTTOUUUU");
+        }
+        throw new RuntimeException("ERRRRRRRROUUU, o Numero foi " + numeroGerado);
+    }
 
 
 

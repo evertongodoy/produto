@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("produtos")
 @Tag(name = "MVC - Produto Controller API", description = "Controller para tratar requisições de Produtos na API")
@@ -34,8 +37,22 @@ public class ProdutoControllerMvc {
 
     @GetMapping("/cadastro")
     @Operation(summary = "Exibir Formulario", description = "Redireciona para pagina de formulario")
-    public String exibirFormulario(Model model){
+    public String exibirFormulario(@RequestParam(required = false) Long id, Model model){
         var request = new ProdutoRequest();
+        if(Objects.nonNull(id)){
+            Optional<Produto> produto = produtoRepository.findById(id);
+            if (produto.isPresent()) {
+                request.setId(produto.get().getId());
+                request.setDescricao(produto.get().getDescricao());
+                request.setLote(produto.get().getLote());
+                request.setPreco(produto.get().getPreco());
+                request.setQuantidade(produto.get().getQuantidade());
+                request.setCodigoBarra(produto.get().getCodigoBarra());
+            } else {
+                // Caso o ID não exista, pode adicionar uma mensagem ou redirecionar
+                model.addAttribute("errorMessage", "Produto não encontrado.");
+            }
+        }
         model.addAttribute("produtoRequest", request);
         return "formularioProduto";
     }
@@ -47,7 +64,9 @@ public class ProdutoControllerMvc {
                 .setCodigoBarra(request.getCodigoBarra())
                 .setLote(request.getLote())
                 .setQuantidade(request.getQuantidade());
-
+        if(Objects.nonNull(request.getId())){
+            p.setId(request.getId());
+        }
         produtoRepository.save(p);
         model.addAttribute("produtoSalvo", request);
         return "sucesso";

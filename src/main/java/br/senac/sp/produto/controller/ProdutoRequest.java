@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class ProdutoRequest {
 
+    private Long id;
     @NotBlank(message = "A descricao não pode estar em branco.")
     @Size(min = 5, max = 30, message = "A descricao deve ter entre 5 e 30 caracteres.")
     private String descricao;
@@ -27,6 +28,14 @@ public class ProdutoRequest {
     @Size(min = 8, max = 50, message = "O código de barras deve ter entre 8 e 50 caracteres.")
     @Pattern(regexp = "^[0-9]+$", message = "O código de barras deve conter apenas números.")
     private String codigoBarra;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescricao() {
         return descricao;
