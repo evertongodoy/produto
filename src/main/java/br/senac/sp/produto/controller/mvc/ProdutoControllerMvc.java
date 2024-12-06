@@ -59,14 +59,13 @@ public class ProdutoControllerMvc {
 
     @PostMapping("/salvar")
     public String salvarProduto(@ModelAttribute ProdutoRequest request, Model model){
-        var p = new Produto().setDescricao(request.getDescricao())
+        var p = new Produto()
+                .setId(request.getId())
+                .setDescricao(request.getDescricao())
                 .setPreco(request.getPreco())
                 .setCodigoBarra(request.getCodigoBarra())
                 .setLote(request.getLote())
                 .setQuantidade(request.getQuantidade());
-        if(Objects.nonNull(request.getId())){
-            p.setId(request.getId());
-        }
         produtoRepository.save(p);
         model.addAttribute("produtoSalvo", request);
         return "sucesso";

@@ -2,8 +2,10 @@ spring:
   application:
     name: Loja-Produtos
   datasource:
-    url: jdbc:h2:mem:produtodb
-    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:produtodb
+#    driver-class-name: org.h2.Driver
+    urL: jdbc:mysql://localhost:4306/produtodb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: produto
     password: produto
   h2:
@@ -12,6 +14,7 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
+      dialect: org.hibernate.dialect.MySQL57Dialect
       ddl-auto: none
     show-sql: true
 #  web:
@@ -20,6 +23,7 @@ spring:
 
 flyway:
   enabled: true
+  baseline-on-migrate: true
 
 springdoc:
   api-docs:
