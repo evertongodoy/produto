@@ -12,7 +12,7 @@ services:
       # Substitua o caminho abaixo pelo caminho absoluto no seu Windows
       #- ./sql-scripts:/docker-entrypoint-initdb.d
     ports:
-      - "4306:3306"
+      - "5306:3306"
 
   adminer:
     image: adminer:latest
