@@ -2,28 +2,33 @@ package br.senac.sp.produto.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "produto")
+//@Entity
+//@Table(name = "produto")
+@Document(collection = "produto")
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+    private String id;
     private String descricao;
     private BigDecimal preco;
     private Integer quantidade;
     private String lote;
-    @JsonProperty("codigo_barra")
+    @Field("codigo_barra") // Mapeia o nome do campo no MongoDB
+    @JsonProperty("codigo_barra") // Mapeia o JSON serializado para o cliente
     private String codigoBarra;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public Produto setId(Long id) {
+    public Produto setId(String id) {
         this.id = id;
         return this;
     }

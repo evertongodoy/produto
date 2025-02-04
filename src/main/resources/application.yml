@@ -1,36 +1,52 @@
 spring:
   application:
-    name: Loja-Produtos
-  datasource:
+    name: Loja-Produtos # Nome da aplicação
+  data:
+    mongodb:
+      uri: mongodb://produto:produto@localhost:27017/produtodb?authSource=admin # URI de conexão com o MongoDB
+
+  task:
+    execution:
+      pool:
+        core-size: 50         # Tamanho mínimo do pool de threads
+        max-size: 50          # Tamanho máximo do pool de threads
+        queue-capacity: 150   # Capacidade da fila de espera
+      thread-name-prefix: "Async-" # Prefixo do nome das threads
+
+#  datasource:
 #    url: jdbc:h2:mem:produtodb
 #    driver-class-name: org.h2.Driver
-    urL: jdbc:mysql://localhost:5306/produtodb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: produto
-    password: produto
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      dialect: org.hibernate.dialect.MySQL57Dialect
-      ddl-auto: none
-    show-sql: true
+
+    #MySQL
+#    urL: jdbc:mysql://localhost:5306/produtodb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: produto
+#    password: produto
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  jpa:
+#    hibernate:
+#      dialect: org.hibernate.dialect.MySQL57Dialect
+#      ddl-auto: none
+#    show-sql: true
 #  web:
 #    resources:
 #      static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/
 
 flyway:
-  enabled: true
-  baseline-on-migrate: true
+  enabled: false # true # true para MySQL
+  baseline-on-migrate: true # Cria a tabela flyway_schema_history se não existir
 
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: /v3/api-docs # Caminho da documentação da API
   swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
+    path: /swagger-ui.html # Caminho da interface do Swagger
+    enabled: true # Habilita a interface do Swagger
 #    path: /swagger-ui/index.html
 #    operationsSorter: method
 #    tagsSorter: name
+
+

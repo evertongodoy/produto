@@ -37,7 +37,7 @@ public class ProdutoControllerMvc {
 
     @GetMapping("/cadastro")
     @Operation(summary = "Exibir Formulario", description = "Redireciona para pagina de formulario")
-    public String exibirFormulario(@RequestParam(required = false) Long id, Model model){
+    public String exibirFormulario(@RequestParam(required = false) String id, Model model){
         var request = new ProdutoRequest();
         if(Objects.nonNull(id)){
             Optional<Produto> produto = produtoRepository.findById(id);

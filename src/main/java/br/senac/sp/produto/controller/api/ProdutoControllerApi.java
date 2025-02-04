@@ -45,7 +45,7 @@ public class ProdutoControllerApi {
 
     @GetMapping("/get-produto/{idProduto}")
     @Operation(summary = "Recuperar por ID", description = "Retorna produto por ID")
-    public ResponseEntity<Produto> recuperarPorId(@PathVariable(name = "idProduto") Long id) {
+    public ResponseEntity<Produto> recuperarPorId(@PathVariable(name = "idProduto") String id) {
         var produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ID NAO LOCALIZADO"));
         System.out.println(produto);
@@ -69,7 +69,7 @@ public class ProdutoControllerApi {
     @PutMapping("/atualizar/{idProduto}")
     @Operation(summary = "Atualizar produto", description = "Atualia o produto")
     public ResponseEntity<Produto> alterarProdutoTotal(
-            @PathVariable(name = "idProduto") Long id,
+            @PathVariable(name = "idProduto") String id,
             @RequestBody ProdutoRequest request
     ) {
         if (Objects.isNull(request.getDescricao()) ||
@@ -102,7 +102,7 @@ public class ProdutoControllerApi {
     @PatchMapping("/atualizar/{idProduto}")
     @Operation(summary = "Atualizar produto", description = "Atualizar produto parcialmente")
     public ResponseEntity<Produto> alterarProdutoParcial(
-            @PathVariable(name = "idProduto") Long id,
+            @PathVariable(name = "idProduto") String id,
             @RequestBody ProdutoRequest request
     ) {
         Produto produtoEntidade = new Produto();
@@ -131,7 +131,7 @@ public class ProdutoControllerApi {
 
     @DeleteMapping("/deletar/{idProduto}")
     @Operation(summary = "Deletar produto", description = "Deleta produto do banco de dados")
-    public ResponseEntity<Void> deletar(@PathVariable(name = "idProduto") Long id){
+    public ResponseEntity<Void> deletar(@PathVariable(name = "idProduto") String id){
         var produtoOptional = produtoRepository.findById(id);
         if (produtoOptional.isEmpty()) {
             throw new RuntimeException("PRODUTO NAO EXISTE");
